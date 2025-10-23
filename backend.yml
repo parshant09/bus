@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backp
+  labels:
+    app: bb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bb
+  template:
+    metadata:
+      labels:
+        app: bb
+    spec:
+      containers:
+        - name: back-con
+          image: docker.io/parshant09/p-back-bus:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: vvpv
+              mountPath: /backback
+      volumes:
+        - name: vvpv
+          persistentVolumeClaim:
+            claimName: vvpvc
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-ser
+spec:
+  selector:
+    app: bb
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30101

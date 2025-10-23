@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontp
+  labels:
+    app: ff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ff
+  template:
+    metadata:
+      labels:
+        app: ff
+    spec:
+      containers:
+        - name: front-con
+          image: docker.io/parshant09/p-front-bus:latest
+          ports:
+            - containerPort: 3000
+---          
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-serr
+spec:
+  selector:
+    app: ff
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30099
