@@ -1,0 +1,3 @@
+module.exports = {
+    MongoURI: "mongodb://admin:admin123@10.1.92.67:27017/tppdb?authSource=admin"
+}

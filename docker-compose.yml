@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  front:
+    container_name: fro
+    build: ./f
+    env_file:
+      - ./f/.env
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_OPTIONS: "--openssl-legacy-provider"
+      HOST: "0.0.0.0"
+      PORT: "3000"
+    stdin_open: true   # keep container running
+    tty: true
+    depends_on:
+      - back
+  back:
+    container_name: back
+    build: ./b
+    environment:
+      DB_URL: "mongodb://admin:admin123@10.1.92.185:27017/tppdb?authSource=admin"
+    env_file:
+      - ./b/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+  mongo:
+    container_name: db
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
